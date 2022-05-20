@@ -22,7 +22,8 @@
  *    'Sun, 17 May 1998 03:00:00 GMT+01' => Date()
  */
 function parseDataFromRfc2822(value) {
-   throw new Error('Not implemented');
+   return new Date(value);
+   //throw new Error('Not implemented');
 }
 
 /**
@@ -37,7 +38,8 @@ function parseDataFromRfc2822(value) {
  *    '2016-01-19T08:07:37Z' => Date()
  */
 function parseDataFromIso8601(value) {
-   throw new Error('Not implemented');
+   return new Date(value);
+   //throw new Error('Not implemented');
 }
 
 
@@ -56,7 +58,12 @@ function parseDataFromIso8601(value) {
  *    Date(2015,1,1)    => false
  */
 function isLeapYear(date) {
-   throw new Error('Not implemented');
+   var year = date.getFullYear();
+   if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {           //2004 - true
+      return true;
+   }
+   return false;
+   //throw new Error('Not implemented');
 }
 
 
@@ -76,9 +83,38 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
 function timeSpanToString(startDate, endDate) {
-   throw new Error('Not implemented');
-}
+   var timespan = endDate - startDate;
+   var ms = timespan % 1000;
+   timespan = (timespan - ms) / 1000;
+   var sec = timespan % 60;
+   timespan = (timespan - sec) / 60;
+   var m = timespan % 60;
+   timespan = (timespan - m) / 60;
+   var h = timespan;
 
+   function ts(val) {
+      if (val < 10) {
+         return `0${val}`;
+      } else {
+         return `${val}`;
+      }
+   }
+
+   function tms(val) {
+      if (9 < val && val < 100) {
+         return `0${val}`;
+      } else
+         if (val < 10) {
+            return `00${val}`;
+         } else {
+            return `${val}`;
+         }
+   }
+
+   return `${ts(h)}:${ts(m)}:${ts(sec)}.${tms(ms)}`;
+
+   //throw new Error('Not implemented');
+}
 
 /**
  * Returns the angle (in radians) between the hands of an analog clock for the specified Greenwich time.
@@ -93,15 +129,28 @@ function timeSpanToString(startDate, endDate) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(date) {
-    throw new Error('Not implemented');
+function angleBetweenClockHands(date) {            //Imp
+   // var hr = date.getHours();
+   // var min = date.getMinutes();
+   // if(hr > 12) {
+   //    hr = 24-hr;
+   // }
+   // return (hr*30)+(min*0.5);                    //360/12 -- hr, 
+
+   var newDate = new Date(+date + date.getTimezoneOffset() * 60 * 1000);
+   var hours = newDate.getHours() % 12;
+   var min = newDate.getMinutes();
+   var angle = Math.abs((Math.PI / 360) * (60 * hours - 11 * min));
+   return angle > Math.PI ? (Math.PI * 2 - angle) : angle;
+
+   //throw new Error('Not implemented');
 }
 
 
 module.exports = {
-    parseDataFromRfc2822: parseDataFromRfc2822,
-    parseDataFromIso8601: parseDataFromIso8601,
-    isLeapYear: isLeapYear,
-    timeSpanToString: timeSpanToString,
-    angleBetweenClockHands: angleBetweenClockHands
+   parseDataFromRfc2822: parseDataFromRfc2822,
+   parseDataFromIso8601: parseDataFromIso8601,
+   isLeapYear: isLeapYear,
+   timeSpanToString: timeSpanToString,
+   angleBetweenClockHands: angleBetweenClockHands
 };
