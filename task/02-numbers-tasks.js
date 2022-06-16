@@ -56,7 +56,7 @@ function getCicleCircumference(radius) {
  *  -3, 3  => 0
  */
 function getAverage(value1, value2) {
-    return (value1 + value2) / 2;
+    return (value1 / 2 + value2 / 2);
     // throw new Error('Not implemented');
 }
 
@@ -246,7 +246,7 @@ function isPrime(n) {
  */
 function toNumber(value, def) {
     var num = Number(value);
-    if (num != NaN && (typeof num == 'number' || num instanceof Number)) {
+    if (!isNaN(num) && (typeof num == 'number' || num instanceof Number)) {
         return num;
     }
     return def;

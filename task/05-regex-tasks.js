@@ -53,8 +53,9 @@ function getRegexForGuid() {
  * @return {RegExp}
  *
  */
-function getRegexForPitSpot() {
-   return new RegExp(/pit|spot|spate|slap two|respite/);
+function getRegexForPitSpot() {          //Imp
+   // return new RegExp(/pit|spot|spate|slap two|respite/);
+   return new RegExp(/^(pi|s|r).+/);
    //throw new Error('Not implemented');
 }
 
@@ -124,8 +125,9 @@ function getRegexForSSN() {
  *   'Pa55'.match(validator) => false
  */
 function getPasswordValidator(minLength) {
-   return new RegExp(`^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{${minLength},}$`);
+   // return new RegExp(`^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{${minLength},}$`);
    //throw new Error('Not implemented');
+   return new RegExp(`(?=^.{${minLength},}$)(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?!.*[_])(?!.*[\\s]).*$`);
 }
 
 
